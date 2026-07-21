@@ -39,6 +39,7 @@
               <td><%= student.course %></td>
               <td><%= student.grade %></td>
               <td class="actions">
+                <a href="/view/<%= student.id %>" class="btn btn-small">View</a>
                 <a href="/edit/<%= student.id %>" class="btn btn-small">Edit</a>
                 <form action="/delete/<%= student.id %>" method="POST" style="display:inline"
                       onsubmit="return confirm('Delete this student?');">
