@@ -1,0 +1,19 @@
+{
+  "name": "student-record-system",
+  "version": "1.0.0",
+  "description": "A simple open-source student record management system built with Express and EJS.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": ["students", "crud", "express", "open-source"],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "ejs": "^3.1.10"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

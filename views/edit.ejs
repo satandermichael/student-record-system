@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Student</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <a href="/" class="brand">📚 Student Record System</a>
+  </header>
+
+  <main class="container">
+    <h1>Edit Student</h1>
+    <form method="POST" action="/edit/<%= student.id %>" class="student-form">
+      <label>Name
+        <input type="text" name="name" value="<%= student.name %>" required />
+      </label>
+      <label>Email
+        <input type="email" name="email" value="<%= student.email %>" required />
+      </label>
+      <label>Course
+        <input type="text" name="course" value="<%= student.course %>" required />
+      </label>
+      <label>Grade
+        <input type="text" name="grade" value="<%= student.grade %>" />
+      </label>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="/" class="btn">Cancel</a>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

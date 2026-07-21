@@ -1,0 +1,16 @@
+[
+  {
+    "id": "1",
+    "name": "Ada Lovelace",
+    "email": "ada@example.com",
+    "course": "Computer Science",
+    "grade": "A"
+  },
+  {
+    "id": "2",
+    "name": "Chinua Achebe",
+    "email": "chinua@example.com",
+    "course": "Literature",
+    "grade": "B+"
+  }
+]
