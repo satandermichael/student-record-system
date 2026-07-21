@@ -85,6 +85,37 @@ app.post('/delete/:id', (req, res) => {
   res.redirect('/');
 });
 
+// Export students to CSV (supports active search filtering)
+app.get('/export-csv', (req, res) => {
+  const students = readStudents();
+  const q = (req.query.q || '').toLowerCase();
+  const filtered = q
+    ? students.filter(
+        (s) =>
+          s.name.toLowerCase().includes(q) ||
+          s.course.toLowerCase().includes(q)
+      )
+    : students;
+
+  const headers = ['id', 'name', 'email', 'course', 'grade'];
+  const rows = filtered.map((s) => {
+    return [
+      s.id,
+      `"${(s.name || '').replace(/"/g, '""')}"`,
+      `"${(s.email || '').replace(/"/g, '""')}"`,
+      `"${(s.course || '').replace(/"/g, '""')}"`,
+      `"${(s.grade || '').replace(/"/g, '""')}"`
+    ].join(',');
+  });
+
+  const csvContent = [headers.join(','), ...rows].join('\n');
+
+  res.setHeader('Content-Type', 'text/csv');
+  res.setHeader('Content-Disposition', 'attachment; filename=students.csv');
+  res.status(200).send(csvContent);
+});
+
+
 app.listen(PORT, () => {
   console.log(`Student Record System running at http://localhost:${PORT}`);
 });
