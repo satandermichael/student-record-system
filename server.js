@@ -66,6 +66,14 @@ app.get('/edit/:id', (req, res) => {
   res.render('edit', { student });
 });
 
+// Show view-student profile
+app.get('/view/:id', (req, res) => {
+  const students = readStudents();
+  const student = students.find((s) => s.id === req.params.id);
+  if (!student) return res.status(404).send('Student not found.');
+  res.render('view', { student });
+});
+
 // Handle edit-student submission
 app.post('/edit/:id', (req, res) => {
   const { name, email, course, grade } = req.body;
