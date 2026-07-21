@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Add Student</title>
   <link rel="stylesheet" href="/style.css" />
+  <script>
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
 </head>
 <body>
   <header class="navbar">
@@ -14,28 +18,40 @@
   <main class="container">
     <div class="glass-panel student-form">
       <h1>Add New Student</h1>
+      
+      <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+        <div class="alert">
+          <strong>Please fix the following errors:</strong>
+          <ul>
+            <% errors.forEach(err => { %>
+              <li><%= err.msg %></li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %>
+
       <form method="POST" action="/add">
         <div class="form-group">
           <label>Full Name</label>
-          <input type="text" name="name" required placeholder="e.g. Jane Doe" />
+          <input type="text" name="name" required placeholder="e.g. Jane Doe" value="<%= typeof student !== 'undefined' ? student.name || '' : '' %>" />
         </div>
         <div class="form-group">
           <label>Email Address</label>
-          <input type="email" name="email" required placeholder="e.g. jane@example.com" />
+          <input type="email" name="email" required placeholder="e.g. jane@example.com" value="<%= typeof student !== 'undefined' ? student.email || '' : '' %>" />
         </div>
         <div class="form-group">
           <label>Course</label>
-          <input type="text" name="course" required placeholder="e.g. Computer Science" />
+          <input type="text" name="course" required placeholder="e.g. Computer Science" value="<%= typeof student !== 'undefined' ? student.course || '' : '' %>" />
         </div>
         <div class="form-group">
           <label>Grade</label>
           <select name="grade">
             <option value="">Select a grade...</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">D</option>
-            <option value="F">F</option>
+            <option value="A" <%= typeof student !== 'undefined' && student.grade === 'A' ? 'selected' : '' %>>A</option>
+            <option value="B" <%= typeof student !== 'undefined' && student.grade === 'B' ? 'selected' : '' %>>B</option>
+            <option value="C" <%= typeof student !== 'undefined' && student.grade === 'C' ? 'selected' : '' %>>C</option>
+            <option value="D" <%= typeof student !== 'undefined' && student.grade === 'D' ? 'selected' : '' %>>D</option>
+            <option value="F" <%= typeof student !== 'undefined' && student.grade === 'F' ? 'selected' : '' %>>F</option>
           </select>
         </div>
         <div class="form-actions">

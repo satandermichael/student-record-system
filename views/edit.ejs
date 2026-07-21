@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Edit Student</title>
   <link rel="stylesheet" href="/style.css" />
+  <script>
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
 </head>
 <body>
   <header class="navbar">
@@ -14,6 +18,18 @@
   <main class="container">
     <div class="glass-panel student-form">
       <h1>Edit Student</h1>
+
+      <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+        <div class="alert">
+          <strong>Please fix the following errors:</strong>
+          <ul>
+            <% errors.forEach(err => { %>
+              <li><%= err.msg %></li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %>
+
       <form method="POST" action="/edit/<%= student.id %>">
         <div class="form-group">
           <label>Full Name</label>

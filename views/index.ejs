@@ -5,11 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Student Record System</title>
   <link rel="stylesheet" href="/style.css" />
+  <script>
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
 </head>
 <body>
   <header class="navbar">
     <a href="/" class="brand">📚 Student Record System</a>
-    <a href="/add" class="btn btn-primary">+ Add Student</a>
+    <div>
+      <button id="theme-toggle" class="btn btn-outline" style="margin-right: 1rem;">🌙</button>
+      <a href="/add" class="btn btn-primary">+ Add Student</a>
+    </div>
   </header>
 
   <main class="container">
@@ -22,9 +29,11 @@
         <div class="stat-title">Unique Courses</div>
         <div class="stat-value"><%= stats.uniqueCourses %></div>
       </div>
-      <div class="stat-card glass-panel">
-        <div class="stat-title">Top Course</div>
-        <div class="stat-value" style="font-size: 1.5rem; line-height: 2.5rem;"><%= stats.topCourse %></div>
+      <div class="stat-card glass-panel" style="padding: 0.5rem 1.5rem">
+        <div class="stat-title">Course Distribution</div>
+        <div class="chart-container">
+          <canvas id="courseChart"></canvas>
+        </div>
       </div>
     </div>
 
@@ -87,6 +96,47 @@
         </table>
       <% } %>
     </div>
+
+    <% if (students.length > 0) { %>
+      <div class="pagination">
+        <a href="/?page=<%= pagination.page - 1 %>&limit=<%= pagination.limit %>&q=<%= q %>&sort=<%= sort %>&order=<%= order %>" 
+           class="btn btn-outline <%= pagination.page === 1 ? 'btn-disabled' : '' %>">Previous</a>
+        <span class="pagination-info">Page <%= pagination.page %> of <%= pagination.totalPages %></span>
+        <a href="/?page=<%= pagination.page + 1 %>&limit=<%= pagination.limit %>&q=<%= q %>&sort=<%= sort %>&order=<%= order %>" 
+           class="btn btn-outline <%= pagination.page >= pagination.totalPages ? 'btn-disabled' : '' %>">Next</a>
+      </div>
+    <% } %>
+
   </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    themeToggleBtn.addEventListener('click', () => {
+      let currentTheme = document.documentElement.getAttribute('data-theme');
+      let newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    });
+    themeToggleBtn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
+
+    const courseCounts = <%- JSON.stringify(typeof courseCounts !== 'undefined' ? courseCounts : {}) %>;
+    if (Object.keys(courseCounts).length > 0) {
+      const ctx = document.getElementById('courseChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: Object.keys(courseCounts),
+          datasets: [{
+            data: Object.values(courseCounts),
+            backgroundColor: ['#6366f1', '#ec4899', '#8b5cf6', '#14b8a6', '#f59e0b', '#3b82f6'],
+            borderWidth: 0
+          }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'right' } } }
+      });
+    }
+  </script>
 </body>
 </html>
